@@ -97,11 +97,11 @@ class MainFragment: Fragment(R.layout.fragment_main) {
 
     private fun reaction(it: UIState<Boolean>){
         if(it is UIState.Loading) return
-        var message = "";
+        var message = ""
         if(it is UIState.Success) {
-            message = it.message;
+            message = it.message
         } else if (it is UIState.Fail){
-            message = it.message;
+            message = it.message
         }
         Toast.makeText(
             requireContext(),
