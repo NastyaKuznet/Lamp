@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.lamp.R
-import com.example.lamp.data.network.entity.State
-import com.example.lamp.data.network.entity.StateResponse
 import com.example.lamp.databinding.FragmentMainBinding
 import com.example.lamp.di.ViewModelFactory
 import com.example.lamp.di.appComponent
