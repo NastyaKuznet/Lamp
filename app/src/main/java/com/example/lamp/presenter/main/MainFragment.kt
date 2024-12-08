@@ -16,6 +16,7 @@ import com.example.lamp.data.network.entity.StateResponse
 import com.example.lamp.databinding.FragmentMainBinding
 import com.example.lamp.di.ViewModelFactory
 import com.example.lamp.di.appComponent
+import com.example.lamp.presenter.entity.UIState
 import javax.inject.Inject
 
 
@@ -58,13 +59,14 @@ class MainFragment: Fragment(R.layout.fragment_main) {
 
 
             viewModel.colors.observe(viewLifecycleOwner){
-                when(it.state){
-                    State.SUCCESS -> {
-                        adapter.addAll(it.content)
+                when(it){
+                    is UIState.Success -> {
+                        adapter.addAll(it.value)
                     }
-                    State.FAIL -> {
+                    is UIState.Fail -> {
                         adapter.addAll(listOf("Нет"))
                     }
+                    else -> {}
                 }
             }
 
@@ -95,18 +97,25 @@ class MainFragment: Fragment(R.layout.fragment_main) {
         super.onAttach(context)
     }
 
-    private fun reaction(it: StateResponse<Boolean>){
+    private fun reaction(it: UIState<Boolean>){
+        if(it is UIState.Loading) return
+        var message = "";
+        if(it is UIState.Success) {
+            message = it.message;
+        } else if (it is UIState.Fail){
+            message = it.message;
+        }
         Toast.makeText(
             requireContext(),
-            it.message,
+            message,
             Toast.LENGTH_SHORT
         ).show()
     }
 
-    private fun stateBrightness(level: Int){
+    private fun stateBrightness(level: Int) {
         viewModel.changeBrightness(level)
-        viewModel.stateBrightness.observe(viewLifecycleOwner){
-            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+        viewModel.stateBrightness.observe(viewLifecycleOwner) {
+            reaction(it)
         }
     }
 }
